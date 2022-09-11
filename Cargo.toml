@@ -1,0 +1,15 @@
+[package]
+name = "fireurl"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.61"
+description = "Fixing the firejail URL open issue"
+repository = "https://github.com/rusty-snake/fireurl"
+license = "MIT"
+#default-run = ""
+
+[dependencies]
+
+[profile.release]
+lto = "thin"
+strip = "debuginfo"
