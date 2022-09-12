@@ -20,10 +20,6 @@ fn main() -> ExitCode {
         /* Running in a container, ask fireurld to open the url */
         let socket = UnixDatagram::unbound().expect("Failed to create unbound UNIX socket");
         match socket.send_to(url.as_bytes(), &fireurl::socket_path()) {
-            // FIXME:
-            //  > On success, returns the number of bytes written.
-            //  Is there a possibility we send only a part of the url?
-            //  If so this is likely a security relevant problem.
             Ok(_) => (),
             Err(error) => {
                 eprintln!("ERROR: Failed to send url: {error}");
