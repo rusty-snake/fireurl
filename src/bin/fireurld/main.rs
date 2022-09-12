@@ -9,23 +9,23 @@ fn main() -> ExitCode {
         Err(error) if error.kind() == IoErrorKind::AddrInUse => {
             eprintln!("ERROR: Failed to bind the socket: {error}");
             eprintln!(
-                "INFO: Make sure that fireurld is not running an delete '{}'.",
+                "INFO: Make sure that fireurld is not running and delete '{}'.",
                 fireurl::socket_path().display()
             );
             return ExitCode::from(10);
         }
         Err(error) => {
-            eprintln!("ERROR: Failed to bind the socket: {error}");
+            eprintln!("ERROR: Failed to create the socket: {error}");
             return ExitCode::FAILURE;
         }
     };
 
     loop {
         let mut buf = [0; 4096];
-        let size = match socket.recv(buf.as_mut_slice()) {
+        let size = match socket.recv(&mut buf) {
             Ok(size) => size,
             Err(error) => {
-                eprintln!("ERROR: socket.recv: {error}");
+                eprintln!("ERROR: Failed to recive message: {error}");
                 continue;
             }
         };
