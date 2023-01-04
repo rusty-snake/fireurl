@@ -19,7 +19,7 @@ fn main() -> ExitCode {
     } else {
         /* Running in a container, ask fireurld to open the url */
         let socket = UnixDatagram::unbound().expect("Failed to create unbound UNIX socket");
-        match socket.send_to(url.as_bytes(), &fireurl::socket_path()) {
+        match socket.send_to(url.as_bytes(), fireurl::socket_path()) {
             Ok(_) => (),
             Err(error) => {
                 eprintln!("ERROR: Failed to send url: {error}");
