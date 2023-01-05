@@ -113,6 +113,7 @@ podman run --rm --security-opt=no-new-privileges --cap-drop=all \
 		cargo build --release --frozen
 		install -Dm0755 ./target/release/fireurl '$INSTALLDIR/bin/fireurl'
 		install -Dm0755 ./target/release/fireurld '$INSTALLDIR/bin/fireurld'
+		install -Dm0644 -t '$INSTALLDIR/share/doc/fireurl' CHANGELOG.md LICENSE README.md systemd/fireurld.service
 		tar -cJf '/outdir/$PROJECT-$VERSION-x86_64-unknown-linux-musl.tar.xz' -C '$INSTALLDIR' .
 	"
 
