@@ -60,8 +60,6 @@ if [[ -n "$(git status --porcelain)" ]]; then
 	exit 1
 fi
 
-exit 0
-
 # Pull alpine image if necessary
 if [[ -z "$(podman image list --noheading alpine:latest)" ]]; then
 	podman pull docker.io/library/alpine:latest
