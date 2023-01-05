@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- basic fireurl client and server.
 
 ### Changed
 
@@ -18,3 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## 0.1.0 - 2023-01-05
+### Added
+- basic fireurl client and server.
+- dist.sh to build the release binaries.
