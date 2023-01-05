@@ -1,0 +1,8 @@
+[Unit]
+Description=fireurl deamon
+
+[Service]
+ExecStart=/opt/fireurl/bin/fireurld
+
+[Install]
+WantedBy=default.target
