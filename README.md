@@ -39,11 +39,11 @@ install -Dm0755 target/release/fireurl /usr/local/bin/fireurl
 install -Dm0755 target/release/fireurld /usr/local/libexec/fireurld
 ```
 
-### Usage
+## Usage
 
 TBW
 
-### Start `fireurld` with systemd
+## Start `fireurld` with systemd
 
 In order to start fireurld with systemd, you need to create a service unit for it.
 Run `systemctl --user edit --full --force fireurld.service`, paste [`systemd/fireurld.serivce`]
