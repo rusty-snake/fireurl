@@ -10,13 +10,17 @@ There is a statically linked 64-bit musl binary attached to very [release](https
 You can install it system-wide:
 
 ```bash
-curl --proto '=https' --tlsv1.3 -sSf -L https://github.com/rusty-snake/fireurl/releases/download/v0.1.0/fireurl-v0.1.0-x86_64-unknown-linux-musl.tar.xz" | tar -xJf- -C /opt/fireurl
+FIREURL_VERSION=0.1.0
+mkdir -p /opt/fireurl
+curl --proto '=https' --tlsv1.3 -sSf -L "https://github.com/rusty-snake/fireurl/releases/download/v$FIREURL_VERSION/fireurl-v$FIREURL_VERSION-x86_64-unknown-linux-musl.tar.xz" | tar -xJf- -C /opt/fireurl --strip-components=3
 ```
 
 or per user:
 
 ```bash
-curl --proto '=https' --tlsv1.3 -sSf -L https://github.com/rusty-snake/fireurl/releases/download/v0.1.0/fireurl-v0.1.0-x86_64-unknown-linux-musl.tar.xz" | tar -xJf- -C ~/.local/opt/fireurl
+FIREURL_VERSION=0.1.0
+mkdir -p ~/.local/opt/fireurl
+curl --proto '=https' --tlsv1.3 -sSf -L "https://github.com/rusty-snake/fireurl/releases/download/v$FIREURL_VERSION/fireurl-v$FIREURL_VERSION-x86_64-unknown-linux-musl.tar.xz" | tar -xJf- -C ~/.local/opt/fireurl --strip-components=3
 ```
 
 
