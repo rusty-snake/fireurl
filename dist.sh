@@ -92,7 +92,7 @@ mkdir -v outdir
 
 # Create the source archive
 echo "$me: Start to pack the source archive"
-git archive --format=tar --prefix="$PROJECT-$VERSION/" -o "outdir/$PROJECT-$VERSION.src.tar" HEAD
+git archive --format=tar --prefix="$PROJECT-$VERSION/" -o "outdir/$PROJECT-$VERSION.src.tar" "${FIREURL_GIT_REF:-HEAD}"
 # tar --xform="s,^,$PROJECT-$VERSION/," -rf "outdir/$PROJECT-$VERSION.src.tar" .cargo vendor
 tar --xform="s,^,$PROJECT-$VERSION/," -rf "outdir/$PROJECT-$VERSION.src.tar"
 xz "outdir/$PROJECT-$VERSION.src.tar"
