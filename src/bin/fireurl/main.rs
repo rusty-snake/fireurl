@@ -1,3 +1,5 @@
+#![warn(rust_2018_idioms)]
+
 use std::env::{args_os, var_os};
 use std::os::unix::net::UnixDatagram;
 use std::os::unix::prelude::*;

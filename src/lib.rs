@@ -1,3 +1,5 @@
+#![warn(rust_2018_idioms)]
+
 use std::env::var_os;
 use std::ffi::OsStr;
 use std::fs::create_dir;
