@@ -46,7 +46,7 @@ TBW
 ## Start `fireurld` with systemd
 
 In order to start fireurld with systemd, you need to create a service unit for it.
-Run `systemctl --user edit --full --force fireurld.service`, paste [`systemd/fireurld.serivce`]
+Run `systemctl --user edit --full --force fireurld.service`, paste [`systemd/fireurld.serivce`](`systemd/fireurld.serivce`)
 and adjust it a necessary. You likely need to change the path to the `fireurld`
 binary. Afterwards you can close the editor and execute
 `systemctl --user enable --now fireurld.service`.
