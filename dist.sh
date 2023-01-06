@@ -32,26 +32,14 @@ me="$(basename "$0")"
 [ -d outdir ] && { echo "$me: Please delete 'outdir' first."; exit 1; }
 
 # Check presents of non-standard programs (everything except coreutils and built-ins)
-if ! command -v cargo >&-; then
-	echo "$me: Missing requirement: cargo is not installed or could not be found."
-	echo "Please make sure cargo is installed and in \$PATH."
-	exit 1
-fi
-if ! command -v git >&-; then
-	echo "$me: Missing requirement: git is not installed or could not be found."
-	echo "Please make sure git is installed and in \$PATH."
-	exit 1
-fi
-if ! command -v podman >&-; then
-	echo "$me: Missing requirement: podman is not installed or could not be found."
-	echo "Please make sure podman is installed and in \$PATH."
-	exit 1
-fi
-if ! command -v xz >&-; then
-	echo "$me: Missing requirement: xz is not installed or could not be found."
-	echo "Please make sure xz is installed and in \$PATH."
-	exit 1
-fi
+REQUIRED_PROGRAMS=(cargo git jq podman xz)
+for program in "${REQUIRED_PROGRAMS[@]}"; do
+	if ! command -v "$program" >&-; then
+		echo "$me: Missing requirement: $program is not installed or could not be found."
+		echo "Please make sure $program is installed and in \$PATH."
+		exit 1
+	fi
+done
 
 # Check working tree
 if [[ -n "$(git status --porcelain)" ]]; then
@@ -71,8 +59,17 @@ if [[ "$(podman run --rm alpine:latest echo "hello")" != "hello" ]]; then
 	exit 1
 fi
 
-IFS='#' read -r PROJECT VERSION < <(basename "$(cargo pkgid)")
-VERSION="v$VERSION"
+# Get RELEASE_ID: <name>-v<version>[+<sha1>]
+TEMP_WORK_TREE=$(mktemp -d "${TMPDIR:-/tmp}/build-${PWD##*/}.XXXXXX")
+# shellcheck disable=SC2064
+trap "rm -r '$TEMP_WORK_TREE'" EXIT
+git --git-dir=.git --work-tree="$TEMP_WORK_TREE" checkout "${FIREURL_GIT_REF:-HEAD}" -- Cargo.toml Cargo.lock src/lib.rs
+RELEASE_ID=$(cargo metadata --no-deps --format-version=1 | jq -j '.packages[0].name, "-v", .packages[0].version')
+if [[ "${FIREURL_GIT_REF:-HEAD}" != v* ]]; then
+	RELEASE_ID="$RELEASE_ID+$(git rev-parse --short "${FIREURL_GIT_REF:-HEAD}")"
+fi
+rm -r "$TEMP_WORK_TREE"
+trap - EXIT
 
 # No dependencies ATM, nothing to vendor.
 # # Vendor all dependencies
@@ -92,10 +89,10 @@ mkdir -v outdir
 
 # Create the source archive
 echo "$me: Start to pack the source archive"
-git archive --format=tar --prefix="$PROJECT-$VERSION/" -o "outdir/$PROJECT-$VERSION.src.tar" "${FIREURL_GIT_REF:-HEAD}"
-# tar --xform="s,^,$PROJECT-$VERSION/," -rf "outdir/$PROJECT-$VERSION.src.tar" .cargo vendor
-tar --xform="s,^,$PROJECT-$VERSION/," -rf "outdir/$PROJECT-$VERSION.src.tar"
-xz "outdir/$PROJECT-$VERSION.src.tar"
+git archive --format=tar --prefix="$RELEASE_ID/" -o "outdir/$RELEASE_ID.src.tar" "${FIREURL_GIT_REF:-HEAD}"
+# tar --xform="s,^,$RELEASE_ID/," -rf "outdir/$RELEASE_ID.src.tar" .cargo vendor
+tar --xform="s,^,$RELEASE_ID/," -rf "outdir/$RELEASE_ID.src.tar"
+xz "outdir/$RELEASE_ID.src.tar"
 
 # Build the project
 echo "$me: Starting build"
@@ -109,12 +106,12 @@ podman run --rm --security-opt=no-new-privileges --cap-drop=all \
 		apk add curl gcc xz ||:
 		curl --proto '=https' --tlsv1.3 -sSf 'https://sh.rustup.rs' | sh -s -- -y --profile minimal
 		source ~/.cargo/env
-		tar --strip=1 -xf '/outdir/$PROJECT-$VERSION.src.tar.xz'
+		tar --strip=1 -xf '/outdir/$RELEASE_ID.src.tar.xz'
 		cargo build --release --frozen
 		install -Dm0755 ./target/release/fireurl '$INSTALLDIR/bin/fireurl'
 		install -Dm0755 ./target/release/fireurld '$INSTALLDIR/bin/fireurld'
 		install -Dm0644 -t '$INSTALLDIR/share/doc/fireurl' CHANGELOG.md LICENSE README.md systemd/fireurld.service
-		tar -cJf '/outdir/$PROJECT-$VERSION-x86_64-unknown-linux-musl.tar.xz' -C '$INSTALLDIR' .
+		tar -cJf '/outdir/$RELEASE_ID-x86_64-unknown-linux-musl.tar.xz' -C '$INSTALLDIR' .
 	"
 
 # Compute checksums
