@@ -27,7 +27,11 @@ fn main() -> Result<(), ExitCode> {
                 continue;
             }
         };
-        fireurl::open(&url);
+        if fireurl::is_uri_trustworthy(url) {
+            fireurl::open(&url);
+        } else {
+            eprintln!("INFO: Not opening uri that failed check.");
+        }
     }
 }
 
