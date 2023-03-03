@@ -55,6 +55,10 @@ and adjust it as necessary. You likely need to change the path to the `fireurld`
 binary. Afterwards you can close the editor and execute
 `systemctl --user enable --now fireurld.service`.
 
+## Start `fireurld` with xdg-autostart
+
+TBW
+
 ## Architecture
 
 Fireurl has a client (fireurl) and a server (fireurld) component.
