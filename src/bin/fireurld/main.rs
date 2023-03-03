@@ -5,22 +5,11 @@ use std::os::unix::net::UnixDatagram;
 use std::process::ExitCode;
 use std::str;
 
-fn main() -> ExitCode {
-    let socket = match UnixDatagram::bind(fireurl::socket_path()) {
-        Ok(socket) => socket,
-        Err(error) if error.kind() == IoErrorKind::AddrInUse => {
-            eprintln!("ERROR: Failed to bind the socket: {error}");
-            eprintln!(
-                "INFO: Make sure that fireurld is not running and delete '{}'.",
-                fireurl::socket_path().display()
-            );
-            return ExitCode::from(10);
-        }
-        Err(error) => {
-            eprintln!("ERROR: Failed to create the socket: {error}");
-            return ExitCode::FAILURE;
-        }
-    };
+fn main() -> Result<(), ExitCode> {
+    // TODO: lnix
+    let orig_umask = unsafe { libc::umask(0o077) };
+    let socket = create_socket()?;
+    unsafe { libc::umask(orig_umask) };
 
     loop {
         let mut buf = [0; 4096];
@@ -39,5 +28,25 @@ fn main() -> ExitCode {
             }
         };
         fireurl::open(&url);
+    }
+}
+
+fn create_socket() -> Result<UnixDatagram, ExitCode> {
+    match UnixDatagram::bind(fireurl::socket_path()) {
+        Ok(socket) => Ok(socket),
+        Err(error) => {
+            eprintln!("ERROR: Failed to bind the socket: {error}");
+
+            if error.kind() == IoErrorKind::AddrInUse {
+                eprintln!(
+                    "INFO: Make sure that fireurld is not running and delete '{}'.",
+                    fireurl::socket_path().display()
+                );
+
+                Err(ExitCode::from(10))
+            } else {
+                Err(ExitCode::FAILURE)
+            }
+        }
     }
 }

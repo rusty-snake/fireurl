@@ -9,6 +9,7 @@ license = "MIT"
 #default-run = ""
 
 [dependencies]
+libc = "0.2"
 
 [profile.release]
 lto = "thin"
