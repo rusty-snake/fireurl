@@ -1,5 +1,6 @@
 #![warn(rust_2018_idioms)]
 
+use std::borrow::Cow;
 use std::env::var_os;
 use std::ffi::OsStr;
 use std::fs::create_dir;
@@ -18,12 +19,16 @@ pub fn socket_path() -> PathBuf {
 }
 
 pub fn open<S: AsRef<OsStr>>(url: &S) {
+    let browser = match var_os("FIREURL_BROWSER") {
+        Some(browser) => Cow::Owned(browser),
+        None => Cow::Borrowed(OsStr::new("firefox")),
+    };
     // TODO:
-    //  - Make browser and commandline configurable.
+    //  - Make program and commandline configurable.
     //  - Collect zombies
     //  - What happens if we start a new main instance outside of a session?
     //  - Support non http(s) urls
-    Command::new("firefox")
+    Command::new(browser)
         .arg(url.as_ref())
         .spawn()
         .expect("Failed to spawn firefox");
