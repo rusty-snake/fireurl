@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
+- `FIREURL_BROWSER` env variable to set the browser
+  > **Note**: This is a stopgap solution and will eventually be removed in the future.
 
 ### Changed
+- Refactored and Improved dist.sh
+- Create fireurld socket with 0600 mode
 
 ### Deprecated
 
