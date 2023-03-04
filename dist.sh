@@ -74,27 +74,25 @@ fi
 rm -r "$TEMP_WORK_TREE"
 trap - EXIT
 
-# No dependencies ATM, nothing to vendor.
-# # Vendor all dependencies
-# cargo --color=never --locked vendor vendor
-# [ -d .cargo ] && mv -v .cargo .cargo.bak
-# mkdir -v .cargo
-# trap "rm -rv .cargo && [ -d .cargo.bak ] && mv -v .cargo.bak .cargo" EXIT
-# echo "$me: Creating .cargo/config.toml"
-# cat > .cargo/config.toml <<EOF
-# [source.crates-io]
-# replace-with = "vendored-sources"
-# [source.vendored-sources]
-# directory = "vendor"
-# EOF
+# Vendor all dependencies
+cargo --color=never --locked vendor vendor
+[ -d .cargo ] && mv -v .cargo .cargo.bak
+mkdir -v .cargo
+trap "rm -rv .cargo && [ -d .cargo.bak ] && mv -v .cargo.bak .cargo" EXIT
+echo "$me: Creating .cargo/config.toml"
+cat > .cargo/config.toml <<EOF
+[source.crates-io]
+replace-with = "vendored-sources"
+[source.vendored-sources]
+directory = "vendor"
+EOF
 
 mkdir -v outdir
 
 # Create the source archive
 echo "$me: Start to pack the source archive"
 git archive --format=tar --prefix="$RELEASE_ID/" -o "outdir/$RELEASE_ID.src.tar" "${FIREURL_GIT_REF:-HEAD}"
-# tar --xform="s,^,$RELEASE_ID/," -rf "outdir/$RELEASE_ID.src.tar" .cargo vendor
-tar --xform="s,^,$RELEASE_ID/," -rf "outdir/$RELEASE_ID.src.tar"
+tar --xform="s,^,$RELEASE_ID/," -rf "outdir/$RELEASE_ID.src.tar" .cargo vendor
 xz "outdir/$RELEASE_ID.src.tar"
 
 # Build the project
