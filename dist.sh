@@ -19,6 +19,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
+# USAGE:
+#   [MINISIGN="/path/to/secret.key"] [FIREURL_GIT_REF=<ref>] ./dist.sh
+
 set -euo pipefail
 
 # cd into the project directory
