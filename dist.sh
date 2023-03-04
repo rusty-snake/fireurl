@@ -66,8 +66,11 @@ fi
 TEMP_WORK_TREE=$(mktemp -d "${TMPDIR:-/tmp}/build-${PWD##*/}.XXXXXX")
 # shellcheck disable=SC2064
 trap "rm -r '$TEMP_WORK_TREE'" EXIT
-git --git-dir=.git --work-tree="$TEMP_WORK_TREE" checkout "${FIREURL_GIT_REF:-HEAD}" -- Cargo.toml Cargo.lock src/lib.rs
-RELEASE_ID=$(cargo metadata --no-deps --format-version=1 | jq -j '.packages[0].name, "-v", .packages[0].version')
+for file in Cargo.toml Cargo.lock src/lib.rs; do
+	mkdir -p "$TEMP_WORK_TREE/$(dirname "$file")"
+	git show "${FIREURL_GIT_REF:-HEAD}:$file" > "$TEMP_WORK_TREE/$file"
+done
+RELEASE_ID=$(cargo metadata --manifest-path="$TEMP_WORK_TREE/Cargo.toml" --no-deps --format-version=1 | jq -j '.packages[0].name, "-v", .packages[0].version')
 if [[ "${FIREURL_GIT_REF:-HEAD}" != v* ]]; then
 	RELEASE_ID="$RELEASE_ID+$(git rev-parse --short "${FIREURL_GIT_REF:-HEAD}")"
 fi
