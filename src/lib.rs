@@ -37,8 +37,8 @@ pub fn is_uri_trustworthy(uri: &str) -> bool {
             .any(|b| b == b':')
 }
 
-pub fn open<S: AsRef<OsStr>>(url: &S) {
-    let browser = match var_os("FIREURL_BROWSER") {
+pub fn open<S: AsRef<OsStr>>(url: &S, env_name: &str) {
+    let browser = match var_os(env_name) {
         Some(browser) => Cow::Owned(browser),
         None => Cow::Borrowed(OsStr::new("firefox")),
     };
@@ -50,5 +50,5 @@ pub fn open<S: AsRef<OsStr>>(url: &S) {
     Command::new(browser)
         .arg(url.as_ref())
         .spawn()
-        .expect("Failed to spawn firefox");
+        .expect("Failed to spawn browser");
 }

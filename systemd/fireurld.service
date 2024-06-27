@@ -3,7 +3,7 @@ Description=fireurl deamon
 
 [Service]
 ExecStart=/opt/fireurl/bin/fireurld
-Environment=FIREURL_BROWSER=firefox
+Environment=FIREURLD_BROWSER=firefox
 
 [Install]
 WantedBy=default.target

@@ -21,7 +21,7 @@ fn main() -> ExitCode {
 
     if var_os("container").is_none() {
         /* Not running in a container (firejail, flatpak, podman, ...), open url directly */
-        fireurl::open(&url);
+        fireurl::open(&url, "FIREURL_BROWSER");
     } else {
         /* Running in a container, ask fireurld to open the url */
         let socket = UnixDatagram::unbound().expect("Failed to create unbound UNIX socket");
