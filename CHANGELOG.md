@@ -18,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## 0.3.0 - 2024-06-27
+### Added
+- FIREURLD_BROWSER environment variable to set the browser for fireurld (by @a-ilin in #10)
+
+### Changed
+- Updated dependencies
+
+### Fixed
+- dist.sh for 0.2.0
+
 ## 0.2.0 - 2023-03-04
 ### Added
 - `FIREURL_BROWSER` env variable to set the browser
