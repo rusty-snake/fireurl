@@ -24,16 +24,16 @@ pub fn socket_path() -> PathBuf {
 ///   TODO: Could be stricter
 /// - Must be at least 3 characters long
 /// - Starts with an letter
-/// - Has a colon within the first 10 characters and all preceding characters
-///   must be letters, digits, `+` or `-`.
+/// - Has a colon within the first 15 characters and all preceding characters
+///   must be letters, digits, `+`, `-` or `.`.
 pub fn is_uri_trustworthy(uri: &str) -> bool {
     uri.chars().all(|c| c.is_ascii_graphic())
         && uri.len() >= 3
         && uri.bytes().next().unwrap().is_ascii_alphabetic()
         && uri
             .bytes()
-            .take(10)
-            .take_while(|b| b.is_ascii_alphanumeric() || [b'+', b'-', b':'].contains(b))
+            .take(15)
+            .take_while(|b| b.is_ascii_alphanumeric() || [b'+', b'-', b':', b'.'].contains(b))
             .any(|b| b == b':')
 }
 
