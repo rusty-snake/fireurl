@@ -7,7 +7,7 @@
   - Create a new tag: `v{{version}}`
   - Target: `main`
   - Title: `v{{version}`
-  ```markdown
+  ````markdown
   ## What's Changed
   {{CHANGELOG.md}}
 
@@ -27,7 +27,7 @@
   ```
 
   [minisign]: https://jedisct1.github.io/minisign/
-  ```
+  ````
   - Check "Create a discussion for this release"
 - [ ] Publish Release
 - [ ] Fetch tag
@@ -46,7 +46,7 @@
   - Create a new tag: `v{{version}}`
   - Target: `release/v1.2.3`
   - Title: `v{{version}`
-  ```markdown
+  ````markdown
   ## What's Changed
   {{CHANGELOG.md}}
 
@@ -63,7 +63,7 @@
 
   ```bash
   minisign -V -P RWS65FES3L8OgwhyZPHwbh1GyXsCZvJtQ5y4LXWHJKMpkhjNXNDt0Bzi -m fireurl-v{{version}}-x86_64-unknown-linux-musl.tar.xz
-  ```
+  ````
 
   [minisign]: https://jedisct1.github.io/minisign/
   ```
