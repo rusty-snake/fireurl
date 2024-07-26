@@ -10,7 +10,7 @@ There is a statically linked 64-bit musl binary attached to very [release](https
 You can install it system-wide:
 
 ```bash
-FIREURL_VERSION=0.2.0
+FIREURL_VERSION=0.3.1
 mkdir -p /opt/fireurl
 curl --proto '=https' --tlsv1.3 -sSf -L "https://github.com/rusty-snake/fireurl/releases/download/v$FIREURL_VERSION/fireurl-v$FIREURL_VERSION-x86_64-unknown-linux-musl.tar.xz" | tar -xJf- -C /opt/fireurl
 ```
@@ -18,7 +18,7 @@ curl --proto '=https' --tlsv1.3 -sSf -L "https://github.com/rusty-snake/fireurl/
 or per user:
 
 ```bash
-FIREURL_VERSION=0.2.0
+FIREURL_VERSION=0.3.1
 mkdir -p ~/.local/opt/fireurl
 curl --proto '=https' --tlsv1.3 -sSf -L "https://github.com/rusty-snake/fireurl/releases/download/v$FIREURL_VERSION/fireurl-v$FIREURL_VERSION-x86_64-unknown-linux-musl.tar.xz" | tar -xJf- -C ~/.local/opt/fireurl
 ```
