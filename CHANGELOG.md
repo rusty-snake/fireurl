@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## 0.3.1 - 2024-07-26
+### Changed
+- Increase schema size to 15, allow point in URL schema (by @a-ilin in #13)
+
 ## 0.3.0 - 2024-06-27
 ### Added
 - FIREURLD_BROWSER environment variable to set the browser for fireurld (by @a-ilin in #10)
