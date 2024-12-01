@@ -2,6 +2,7 @@
 Description=fireurl deamon
 
 [Service]
+ExecStartPre=/usr/bin/rm -f ${XDG_RUNTIME_DIR}/fireurl/fireurl0
 ExecStart=/opt/fireurl/bin/fireurld
 Environment=FIREURLD_BROWSER=firefox
 
